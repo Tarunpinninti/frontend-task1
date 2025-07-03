@@ -1,0 +1,21 @@
+/* Fixes default react-calendar padding */
+.REACT-CALENDAR {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+}
+
+.react-calendar__tile {
+  height: 90px;
+  vertical-align: top;
+  padding: 0.5rem;
+}
+
+.react-calendar__tile--now {
+  background: #e9d8fd !important;
+}
+
+.react-calendar__tile--active {
+  background: #805ad5 !important;
+  color: white;
+}
