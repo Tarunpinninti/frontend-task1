@@ -1,20 +1,20 @@
 // src/App.js
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Sales from "./pages/Sales";
 import CalendarPage from "./pages/CalendarPage";
 import Tasks from "./pages/Tasks";
-import Login from "./pages/Login"; // ✅ Import Login Page
+import Login from "./pages/Login";
 import DashboardLayout from "./layouts/DashboardLayout";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter basename="/frontend-task1">
       <Routes>
-        {/* 🔐 Login Page (standalone, no sidebar) */}
+        {/* 🔐 Login Page (standalone) */}
         <Route path="/" element={<Login />} />
 
-        {/* 📊 Dashboard Pages (wrapped in layout) */}
+        {/* 📊 Dashboard Pages */}
         <Route
           path="/dashboard/*"
           element={
@@ -27,7 +27,7 @@ function App() {
           }
         />
 
-        {/* 🗓 Leads and Cases (also wrapped in layout) */}
+        {/* 🗓 Calendar and Tasks */}
         <Route
           path="/leads/calendar"
           element={
@@ -45,7 +45,7 @@ function App() {
           }
         />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
