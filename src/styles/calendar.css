@@ -1,0 +1,16 @@
+/* src/styles/calendar.css */
+
+.rbc-month-view {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.rbc-today {
+  background: #f0f4ff !important;
+}
+
+.rbc-event {
+  padding: 0 !important;
+  background-color: transparent !important;
+  border: none !important;
+}

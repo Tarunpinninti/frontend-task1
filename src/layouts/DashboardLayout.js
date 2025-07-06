@@ -1,23 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import Sidebar from "../components/Sidebar";
+
 export default function DashboardLayout({ children }) {
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <aside className="w-64 bg-white shadow-md p-6 space-y-4 hidden sm:block">
-        <h2 className="text-xl font-bold text-purple-600 mb-6">My Dashboard</h2>
-        <nav className="flex flex-col space-y-2">
-          <Link to="/home" className="text-gray-700 hover:text-purple-600">🏠 Home</Link>
-          <Link to="/tasks" className="text-gray-700 hover:text-purple-600">✅ Tasks</Link>
-          <Link to="/calendar" className="text-gray-700 hover:text-purple-600">📅 Calendar</Link>
-          <Link to="/sales" className="text-gray-700 hover:text-purple-600">📊 Sales</Link>
-          <Link to="/" className="text-red-500 hover:text-red-600 mt-4">🚪 Logout</Link>
-        </nav>
-      </aside>
-
+      <Sidebar />
       <main className="flex-1 p-6">
-        <header className="bg-white rounded-lg shadow p-4 mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
+        {/* Header Top Bar */}
+        <header className="bg-white rounded-lg shadow p-4 mb-6 flex items-center justify-between">
+          {/* Search */}
+          <div className="w-1/3">
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none"
+            />
+          </div>
+
+          {/* Right Side: Icons + User */}
+          <div className="flex items-center gap-4">
+            <button className="text-xl text-gray-500 hover:text-gray-700">＋</button>
+            <button className="text-xl text-gray-500 hover:text-gray-700">🔔</button>
+            <div className="flex items-center gap-2">
+              <img
+                src="https://randomuser.me/api/portraits/men/32.jpg"
+                alt="User"
+                className="w-8 h-8 rounded-full"
+              />
+              <span className="text-sm font-medium text-gray-700">Uziel Renta ▾</span>
+            </div>
+          </div>
         </header>
+
+        {/* Page Content */}
         {children}
       </main>
     </div>

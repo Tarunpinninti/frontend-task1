@@ -1,6 +1,5 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import DashboardLayout from '../layouts/DashboardLayout';
 import { FaUsers, FaDollarSign, FaClipboardList, FaUserPlus } from 'react-icons/fa';
 import { MdPlayCircle } from 'react-icons/md';
 
@@ -44,9 +43,7 @@ const activityData = [
 
 export default function Home() {
   return (
-    <DashboardLayout>
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Welcome Back, Tarun 👋</h1>
-
+    <>
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <DashboardCard title="Total Customers" value="21,978" icon={<FaUsers />} stat="+5.2% this month" />
@@ -138,6 +135,6 @@ export default function Home() {
           </ul>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

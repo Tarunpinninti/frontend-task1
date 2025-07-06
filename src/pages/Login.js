@@ -1,54 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/pages/Login.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // ✅ Basic check
+    // For demo only: skip auth logic
     if (email && password) {
-      navigate('/home');
+      navigate("/dashboard/homepage");
     } else {
-      alert('Please enter email and password');
+      alert("Please enter both email and password.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <form onSubmit={handleLogin} className="bg-white p-10 rounded-xl shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold text-purple-600 text-center mb-6">Login Page</h2>
-
-        <label className="block mb-2 font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          className="w-full mb-4 px-4 py-2 border rounded-md"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <label className="block mb-2 font-medium text-gray-700">Password</label>
-        <input
-          type="password"
-          className="w-full mb-6 px-4 py-2 border rounded-md"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition"
-        >
-          Login
-        </button>
-      </form>
+    <div className="flex h-screen bg-gray-100 items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-purple-600 mb-6">
+          CRMHUB Login
+        </h2>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Email</label>
+            <input
+              type="email"
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-purple-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Password</label>
+            <input
+              type="password"
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-purple-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition"
+          >
+            Log In
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

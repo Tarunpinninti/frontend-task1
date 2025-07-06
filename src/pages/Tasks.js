@@ -1,92 +1,101 @@
-import React, { useState } from 'react';
-import DashboardLayout from '../layouts/DashboardLayout';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteTask,
+  moveTask,
+  editTask,
+} from "../redux/taskSlice";
+import TaskCard from "../components/TaskCard";
+import CreateTaskModal from "../components/CreateTaskModal";
 
 export default function Tasks() {
-  const [tasks, setTasks] = useState([
-    { id: 1, title: 'Set up database', status: 'todo' },
-    { id: 2, title: 'Design login screen', status: 'inprogress' },
-    { id: 3, title: 'Deploy to AWS', status: 'done' },
-  ]);
-  const [newTask, setNewTask] = useState('');
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks);
 
-  const addTask = () => {
-    if (newTask.trim()) {
-      setTasks([...tasks, { id: Date.now(), title: newTask, status: 'todo' }]);
-      setNewTask('');
-    }
+  const [editingId, setEditingId] = useState(null);
+  const [editedText, setEditedText] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEdit = (column, id) => {
+    dispatch(editTask({ column, id, newTitle: editedText }));
+    setEditingId(null);
+    setEditedText("");
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
-
-  const moveTask = (id, newStatus) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, status: newStatus } : task
-      )
-    );
-  };
-
-  const renderColumn = (status, title, bg) => (
-    <div className="bg-white rounded-lg shadow p-4 flex-1">
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
-      {tasks
-        .filter((task) => task.status === status)
-        .map((task) => (
-          <div
-            key={task.id}
-            className={`p-3 mb-3 rounded border border-gray-200 shadow-sm bg-${bg}-50`}
-          >
-            <p className="font-medium">{task.title}</p>
-            <div className="flex justify-between text-sm mt-2">
-              <button
-                className="text-red-500 hover:underline"
-                onClick={() => deleteTask(task.id)}
-              >
-                Delete
-              </button>
-              {status !== 'done' && (
-                <button
-                  className="text-blue-500 hover:underline"
-                  onClick={() =>
-                    moveTask(task.id, status === 'todo' ? 'inprogress' : 'done')
-                  }
-                >
-                  Mark {status === 'todo' ? 'In Progress' : 'Done'}
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-    </div>
-  );
+  const statusLabels = [
+    { label: "Not Started", key: "todo" },
+    { label: "In Progress", key: "inProgress" },
+    { label: "Completed", key: "done" },
+  ];
 
   return (
-    <DashboardLayout>
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Task Board</h1>
-
-      <div className="mb-6">
-        <input
-          type="text"
-          className="px-4 py-2 border rounded w-full max-w-md"
-          placeholder="Enter new task..."
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-        />
+    <>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-semibold text-gray-800">Tasks</h1>
         <button
-          onClick={addTask}
-          className="mt-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+          onClick={() => setShowModal(true)}
+          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
         >
-          Add Task
+          + Create Task
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {renderColumn('todo', 'Not Started', 'gray')}
-        {renderColumn('inprogress', 'In Progress', 'yellow')}
-        {renderColumn('done', 'Completed', 'green')}
+      {/* Task Columns */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {statusLabels.map(({ label, key }) => (
+          <div key={key} className="bg-gray-50 p-4 rounded-xl shadow-md">
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">{label}</h2>
+            <ul className="space-y-4">
+              {tasks[key].map((task) => (
+                <li key={task.id}>
+                  {editingId === task.id ? (
+                    <input
+                      value={editedText}
+                      onChange={(e) => setEditedText(e.target.value)}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleEdit(key, task.id)
+                      }
+                      onBlur={() => handleEdit(key, task.id)}
+                      autoFocus
+                      className="w-full px-3 py-2 border rounded"
+                    />
+                  ) : (
+                    <TaskCard
+                      task={task}
+                      onEdit={() => {
+                        setEditingId(task.id);
+                        setEditedText(task.title);
+                      }}
+                      onDelete={() => {
+                        const confirmDelete = window.confirm(
+                          "Are you sure you want to delete this task?"
+                        );
+                        if (confirmDelete) {
+                          dispatch(deleteTask({ column: key, id: task.id }));
+                        }
+                      }}
+                      onMove={(to) =>
+                        dispatch(moveTask({ from: key, to, id: task.id }))
+                      }
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {/* Optional Add Card Button */}
+            <button
+              onClick={() => setShowModal(true)}
+              className="mt-6 w-full py-2 bg-purple-50 text-purple-600 hover:bg-purple-100 rounded text-sm font-medium"
+            >
+              + Add Card
+            </button>
+          </div>
+        ))}
       </div>
-    </DashboardLayout>
+
+      {/* Create Modal */}
+      <CreateTaskModal isOpen={showModal} onClose={() => setShowModal(false)} />
+    </>
   );
 }

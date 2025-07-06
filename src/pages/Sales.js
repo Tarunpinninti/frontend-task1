@@ -1,5 +1,4 @@
 import React from 'react';
-import DashboardLayout from '../layouts/DashboardLayout';
 import {
   LineChart, Line, AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer,
@@ -51,11 +50,12 @@ const pieData = [
   { name: 'Total Overdue', value: 234 },
   { name: 'Total Unpaid', value: 234 },
 ];
+
 const COLORS = ['#805AD5', '#FEB2B2', '#63B3ED'];
 
 export default function Sales() {
   return (
-    <DashboardLayout>
+    <>
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Sales Analytics</h1>
 
       {/* Stats Cards */}
@@ -143,6 +143,6 @@ export default function Sales() {
           </ResponsiveContainer>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }
